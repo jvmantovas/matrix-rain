@@ -71,11 +71,18 @@ const MatrixRain: React.FC = () => {
           this.symbols[i] = new Symbol(i, 0, this.fontSize, this.canvasHeight);
         }
       }
+      resize(width: number, height: number) {
+        this.canvasWidth = width;
+        this.canvasHeight = height;
+        this.columns = this.canvasWidth / this.fontSize;
+        this.symbols = [];
+        this.initialize();
+      }
     }
 
     const effect = new Effect(canvas.width, canvas.height);
     let lastTime = 0;
-    const fps = 60;
+    const fps = 30;
     const nexFrame = 1000 / fps;
     let timer = 0;
 
@@ -97,6 +104,12 @@ const MatrixRain: React.FC = () => {
     }
 
     animate(0);
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      effect.resize(canvas.width, canvas.height);
+    });
   }, []);
   return <canvas ref={canvasRef} />;
 };
